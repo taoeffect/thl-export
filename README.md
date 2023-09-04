@@ -44,4 +44,5 @@ You can view and manipulate the JSON files using the [`jq`](https://jqlang.githu
 
 ## History
 
+- `0.0.2` - Attempt at fixing npm tool install.
 - `0.0.1` - Initial release.

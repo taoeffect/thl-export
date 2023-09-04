@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 'use strict'
 
 import { mkdir, writeFile } from 'node:fs/promises'
