@@ -1,0 +1,29 @@
+{
+  "name": "thl-export",
+  "version": "0.0.1",
+  "description": "The Hist List Exporter",
+  "main": "index.mjs",
+  "bin": {
+    "thl-export": "index.mjs"
+  },
+  "type": "module",
+  "exports": "./index.mjs",
+  "scripts": {
+    "start": "node index.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "the",
+    "hist",
+    "list",
+    "THL",
+    "exporter",
+    "export",
+    "save"
+  ],
+  "author": "Greg Slepak",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "sqlite3": "^5.1.6"
+  }
+}
