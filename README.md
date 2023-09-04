@@ -1,14 +1,22 @@
 # The Hit List Exporter
 
+```
+Usage:
+  thl-export [-m] <thl-sqlitepath> <folder>
+
+  -m --markdown  outputs markdown files instead of json files
+```
+
 ## Install
 
-You can either install using `npm i -g thl-export` and run it using the `thl-export` command.
+If you have NPM installed, install using `npm i -g thl-export` and run it using the `thl-export` command.
 
-Or you can run it directly from within a cloned copy of this repo.
+You can also run it directly from within a cloned copy of this repo.
 
 1. First install [Node.js](https://nodejs.org/) with your favorite package manager
 2. Clone this repo
 3. Run `npm install` inside of it
+4. Run using `node index.mjs`
 
 ## Running the export
 
@@ -38,11 +46,20 @@ Attachments are not exported. (Feel free to send PRs if you want that).
 
 You can view and manipulate the JSON files using the [`jq`](https://jqlang.github.io/jq/) command.
 
+### Markdown support
+
+You can also export as markdown files by using the `-m` flag.
+
+```
+$ thl-export -m ~/Library/Application\ Support/The\ Hit\ List/The\ Hit\ List\ Library.thllibrary/library.sqlite3 export
+```
+
 ## License
 
 `AGPL-3.0`.
 
 ## History
 
+- `1.0.0` - Added markdown support via `-m`.
 - `0.0.2` - Attempt at fixing npm tool install.
 - `0.0.1` - Initial release.

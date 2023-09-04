@@ -6,14 +6,26 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { join, sep } from 'node:path'
 import sqlite3 from 'sqlite3'
+import { jack } from 'jackspeak'
 
-const dbPath = process.argv[2]
-const parentFolder = process.argv[3]
+const j = jack({
+  usage: 'thl-export [-m] <thl-sqlitepath> <folder>'
+}).flag({
+  markdown: { short: 'm', description: "outputs markdown files instead of json files." }
+})
+
+const { values: flags, positionals } = j.parse()
+if (positionals.length !== 2) {
+  console.log(j.usage())
+  process.exit(1)
+}
+const [dbPath, parentFolder] = positionals
 
 const findToplevelTasks = `
   SELECT 
     ZTASK.Z_PK AS 'Id',
     ZTASK.ZPRIORITY AS 'Priority',
+    ZTASK.ZSTATUS AS 'Status',
     ZTASK.ZTITLE AS 'Task',
     ZTASKNOTES.ZSTRING AS 'Notes',  
     datetime(ZTASK.ZCREATEDDATE + 978260000.0, 'unixepoch') AS 'Date',
@@ -32,6 +44,7 @@ const findChildTasks = `
 SELECT
   ZTASK.Z_PK AS 'Id',
   ZTASK.ZPRIORITY AS 'Priority',
+  ZTASK.ZSTATUS AS 'Status',
   ZTASK.ZTITLE AS 'Task',
   ZTASKNOTES.ZSTRING AS 'Notes',
   datetime(ZTASK.ZCREATEDDATE + 978220000.0, 'unixepoch') AS 'Date', 
@@ -70,6 +83,40 @@ function findTask (rows, id) {
   }
 }
 
+function printTask (indent, row) {
+  const task = row.Task.split('\n').map((x, i) => {
+    return '  '.repeat((i === 0 ? 0 : 1) * (indent + 1)) + x
+  }).join('\n')
+  let str = '  '.repeat(indent) + `- [ ] ${task}`
+  if (row.Notes) {
+    str += '\n\n'
+    str += '  '.repeat(indent + 1) + '```\n'
+    str += row.Notes.split('\n').map(x => {
+      return '  '.repeat(indent + 1) + x
+    }).join('\n')
+    str += '\n' + '  '.repeat(indent + 1) + '```\n\n'
+  } else {
+    str += '\n'
+  }
+  if (row.children) {
+    for (const child of row.children) {
+      str += printTask(indent + 1, child)
+    }
+  }
+  return str
+}
+
+function markdownify (listName, rows) {
+  let str = `# ${listName}` + '\n\n'
+  for (const row of rows) {
+    if (!row.Status) {
+      str += printTask(0, row)
+    }
+  }
+  str += '\n'
+  return str
+}
+
 async function saveListsInsideOf (parentPath, topFolder) {
   console.log('Saving lists inside of', parentPath, '...')
   await mkdir(parentPath, { recursive: true })
@@ -79,16 +126,20 @@ async function saveListsInsideOf (parentPath, topFolder) {
       await saveListsInsideOf(join(parentPath, group.ZTITLE), group)
     } else {
       const safeListName = group.ZTITLE.replaceAll(sep, '|').replaceAll(':', '-')
-      const jsonPath = `${join(parentPath, safeListName)}.json`
-      console.log('Exporting', jsonPath, '...')
+      const filePath = `${join(parentPath, safeListName)}.${flags.markdown ? 'md' : 'json'}`
+      console.log('Exporting', filePath, '...')
       const allRows = await dbQuery(findToplevelTasks, [group.Z_PK])
       for (const row of allRows) {
         await fillParentWithChildren(allRows, row.Id)
       }
       try {
-        await writeFile(jsonPath, JSON.stringify(allRows, null, 2))
+        if (flags.markdown) {
+          await writeFile(filePath, markdownify(group.ZTITLE, allRows))
+        } else {
+          await writeFile(filePath, JSON.stringify(allRows, null, 2))
+        }
       } catch (e) {
-        console.error("[ERROR] couldn't save '", jsonPath, "'! Error:", e)
+        console.error("[ERROR] couldn't save '", filePath, "'! Error:", e)
       }
     }
   }
@@ -117,18 +168,9 @@ function dbQuery (query, params) {
   })
 }
 
-function printHelp () {
-  console.log(`USAGE:
-  
-  node index.mjs "<path/to/The Hit List Library.thllibrary/library.sqlite3>" "<exportFolder>"`)
-}
 var db
 ;(async function () {
   try {
-    if (!dbPath || !parentFolder) {
-      printHelp()
-      process.exit(1)
-    }
     db = new sqlite3.Database(dbPath) 
     if (existsSync(parentFolder)) {
       console.error('folder already exists:', parentFolder)
