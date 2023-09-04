@@ -41,8 +41,8 @@ This will create a directory called `export` and save everything into `.json` fi
 
 `thl-export` will:
 
-- Preserve your heirarchy of folders
-- Preserve your heirarchy of tasks, as well as the notes inside of them
+- Preserve your hierarchy of folders
+- Preserve your hierarchy of tasks, as well as the notes inside of them
 
 Exporting attached files is not exported. (Feel free to send PRs).
 
