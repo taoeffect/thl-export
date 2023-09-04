@@ -1,5 +1,7 @@
 # The Hit List Exporter
 
+A tool to export your hit lists from Andy Kim's [The Hit List](https://www.karelia.com/products/the-hit-list/mac.html) todo list app. Supports both JSON and Markdown export.
+
 ```
 Usage:
   thl-export [-m] <thl-sqlitepath> <folder>
