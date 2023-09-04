@@ -60,6 +60,7 @@ $ thl-export -m ~/Library/Application\ Support/The\ Hit\ List/The\ Hit\ List\ Li
 
 ## History
 
+- `1.0.1` - Replace `$` with `\$` in tasks in markdown files for proper rendering.
 - `1.0.0` - Added markdown support via `-m`.
 - `0.0.2` - Attempt at fixing npm tool install.
 - `0.0.1` - Initial release.

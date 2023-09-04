@@ -86,7 +86,7 @@ function findTask (rows, id) {
 function printTask (indent, row) {
   const task = row.Task.split('\n').map((x, i) => {
     return '  '.repeat((i === 0 ? 0 : 1) * (indent + 1)) + x
-  }).join('\n')
+  }).join('\n').replaceAll('$', '\\$')
   let str = '  '.repeat(indent) + `- [ ] ${task}`
   if (row.Notes) {
     str += '\n\n'
