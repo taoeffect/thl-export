@@ -9,15 +9,20 @@ import sqlite3 from 'sqlite3'
 import { jack } from 'jackspeak'
 
 const j = jack({
-  usage: 'thl-export [-m] <thl-sqlitepath> <folder>'
+  usage: 'thl-export [-m|-v] <thl-sqlitepath> <folder>'
 }).flag({
-  markdown: { short: 'm', description: "outputs markdown files instead of json files." }
+  markdown: { short: 'm', description: "outputs markdown files instead of json files." },
+  version: { short: 'v', description: "print version" }
 })
 
 const { values: flags, positionals } = j.parse()
+if (flags.version) {
+  console.log('1.1.0')
+  process.exit(0)
+}
 if (positionals.length !== 2) {
   console.log(j.usage())
-  process.exit(1)
+  process.exit(0)
 }
 const [dbPath, parentFolder] = positionals
 
@@ -90,11 +95,13 @@ function printTask (indent, row) {
   let str = '  '.repeat(indent) + `- [ ] ${task}`
   if (row.Notes) {
     str += '\n\n'
+    str += '  '.repeat(indent + 1) + '<details>\n'
     str += '  '.repeat(indent + 1) + '```\n'
     str += row.Notes.split('\n').map(x => {
       return '  '.repeat(indent + 1) + x
     }).join('\n')
-    str += '\n' + '  '.repeat(indent + 1) + '```\n\n'
+    str += '\n' + '  '.repeat(indent + 1) + '```'
+    str += '\n' + '  '.repeat(indent + 1) + '</details>\n\n'
   } else {
     str += '\n'
   }
