@@ -20,7 +20,7 @@ You can also run it directly from within a cloned copy of this repo.
 3. Run `npm install` inside of it
 4. Run using `node index.mjs`
 
-## Running the export
+## Usage
 
 You need the file `The Hit List Library.thllibrary`. And specifically you need the file `library.sqlite3` inside of it.
 
@@ -39,12 +39,12 @@ $ node index.mjs ~/Library/Application\ Support/The\ Hit\ List/The\ Hit\ List\ L
 
 This will create a directory called `export` and save everything into `.json` files inside of that folder.
 
-It:
+`thl-export` will:
 
-- Preserves your heirarchy of folders
-- Preserves your heirarchy of tasks, as well as the notes inside of them
+- Preserve your heirarchy of folders
+- Preserve your heirarchy of tasks, as well as the notes inside of them
 
-Attachments are not exported. (Feel free to send PRs if you want that).
+Exporting attached files is not exported. (Feel free to send PRs).
 
 You can view and manipulate the JSON files using the [`jq`](https://jqlang.github.io/jq/) command.
 
