@@ -17,7 +17,7 @@ const j = jack({
 
 const { values: flags, positionals } = j.parse()
 if (flags.version) {
-  console.log('1.1.0')
+  console.log('1.1.1') // TODO: read this from package.json
   process.exit(0)
 }
 if (positionals.length !== 2) {
@@ -94,14 +94,22 @@ function printTask (indent, row) {
   }).join('\n').replaceAll('$', '\\$')
   let str = '  '.repeat(indent) + `- [ ] ${task}`
   if (row.Notes) {
+    // don't use <details> if the note contains < symbol
+    // TODO: figure out better way to deal with this
+    const notesContainsLessThan = row.Notes.includes('<')
     str += '\n\n'
-    str += '  '.repeat(indent + 1) + '<details>\n'
+    if (!notesContainsLessThan) {
+      str += '  '.repeat(indent + 1) + '<details>\n'
+    }
     str += '  '.repeat(indent + 1) + '```\n'
     str += row.Notes.split('\n').map(x => {
       return '  '.repeat(indent + 1) + x
     }).join('\n')
     str += '\n' + '  '.repeat(indent + 1) + '```'
-    str += '\n' + '  '.repeat(indent + 1) + '</details>\n\n'
+    if (!notesContainsLessThan) {
+      str += '\n' + '  '.repeat(indent + 1) + '</details>'
+    }
+    str += '\n\n'
   } else {
     str += '\n'
   }

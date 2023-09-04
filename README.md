@@ -60,6 +60,7 @@ $ thl-export -m ~/Library/Application\ Support/The\ Hit\ List/The\ Hit\ List\ Li
 
 ## History
 
+- `1.1.1` - Don't include `<details>` if note contains `<` symbol.
 - `1.1.0` - Hide notes using `<details>` in markdown files.
 - `1.0.1` - Replace `$` with `\$` in tasks in markdown files for proper rendering.
 - `1.0.0` - Added markdown support via `-m`.
