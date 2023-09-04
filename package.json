@@ -6,6 +6,10 @@
   "bin": {
     "thl-export": "index.mjs"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taoeffect/thl-export"
+  },
   "type": "module",
   "exports": "./index.mjs",
   "scripts": {
@@ -24,6 +28,6 @@
   "author": "Greg Slepak",
   "license": "AGPL-3.0",
   "dependencies": {
-    "sqlite3": "^5.1.6"
+    "sqlite3": "5.1.6"
   }
 }
