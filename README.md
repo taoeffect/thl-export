@@ -24,11 +24,7 @@ You can also run it directly from within a cloned copy of this repo.
 
 You need the file `The Hit List Library.thllibrary`. And specifically you need the file `library.sqlite3` inside of it.
 
-1. Navigate to `~/Library/Application Support/The Hit List`
-2. Right-click or Ctrl-click on `The Hit List Library.thllibrary` and choose "Show Package Contents"
-3. Inside of there you'll see the file `library.sqlite3`
-
-Now you can export all of your lists:
+Here's how you can export all of your lists:
 
 ```
 $ thl-export ~/Library/Application\ Support/The\ Hit\ List/The\ Hit\ List\ Library.thllibrary/library.sqlite3 export
