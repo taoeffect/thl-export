@@ -4,7 +4,7 @@ A tool to export your hit lists from Andy Kim's [The Hit List](https://www.karel
 
 ```
 Usage:
-  thl-export [-m] <thl-sqlitepath> <folder>
+  thl-export [-m] <thl-sqlitepath> <export-destination>
 
   -m --markdown  outputs markdown files instead of json files
 ```
@@ -57,7 +57,10 @@ This will create a directory called `export` in the current directory, and save 
 
 Exporting attached files is not exported. (Feel free to send PRs).
 
-You can view and manipulate the JSON files using the [`jq`](https://jqlang.github.io/jq/) command.
+### JSON vs Markdown export
+
+- With JSON, you can view and manipulate the JSON files using the [`jq`](https://jqlang.github.io/jq/) command.
+- Markdown export currently does not include completed or crossed-off items, only pending TODOs. Use JSON if you want those, or submit a PR that adds a command-line option to include them.
 
 ## License
 
