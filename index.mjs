@@ -4,7 +4,7 @@
 
 import { mkdir, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
-import { join, sep } from 'node:path'
+import { join, sep, basename } from 'node:path'
 import sqlite3 from 'sqlite3'
 import { jack } from 'jackspeak'
 
@@ -17,7 +17,7 @@ const j = jack({
 
 const { values: flags, positionals } = j.parse()
 if (flags.version) {
-  console.log('1.1.1') // TODO: read this from package.json
+  console.log('1.1.2') // TODO: read this from package.json
   process.exit(0)
 }
 if (positionals.length !== 2) {
@@ -186,6 +186,8 @@ function dbQuery (query, params) {
 var db
 ;(async function () {
   try {
+    if (basename(dbPath) !== 'library.sqlite3') throw new Error(`not a 'library.sqlite3' file: ${basename(dbPath)}`)
+    if (!existsSync(dbPath)) throw new Error(`file doesn't exist: ${dbPath}`)
     db = new sqlite3.Database(dbPath) 
     if (existsSync(parentFolder)) {
       console.error('folder already exists:', parentFolder)

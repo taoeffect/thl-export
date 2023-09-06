@@ -68,6 +68,7 @@ Exporting attached files is not exported. (Feel free to send PRs).
 
 ## History
 
+- `1.1.2` - Add better error handling.
 - `1.1.1` - Don't include `<details>` if note contains `<` symbol.
 - `1.1.0` - Hide notes using `<details>` in markdown files.
 - `1.0.1` - Replace `$` with `\$` in tasks in markdown files for proper rendering.
