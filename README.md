@@ -50,7 +50,7 @@ And here's an example for how to export using [Markdown](https://en.wikipedia.or
 $ thl-export -m ~/Library/Application\ Support/The\ Hit\ List/The\ Hit\ List.thllibrary/library.sqlite3 export
 ```
 
-This will create a directory called `export` and save all your lists into that folder while making sure to:
+This will create a directory called `export` in the current directory, and save all your lists into that folder while making sure to:
 
 - Preserve your hierarchy of folders
 - Preserve your hierarchy of tasks, as well as the notes inside of them
